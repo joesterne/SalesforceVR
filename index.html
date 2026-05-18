@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SalesforceVR Schema Cloud</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="hud">
+      <h1>SalesforceVR</h1>
+      <p>
+        VR-first schema cloud: trigger to grab nodes, move around, and grip empty space to rotate the whole cloud.
+      </p>
+
+      <details open>
+        <summary>Salesforce Authentication</summary>
+        <div class="auth-grid">
+          <label for="login-url">Login URL</label>
+          <input id="login-url" value="https://login.salesforce.com" />
+          <label for="client-id">Connected App Client ID</label>
+          <input id="client-id" placeholder="3MVG9..." />
+          <label for="api-version">API Version</label>
+          <input id="api-version" value="v62.0" />
+          <label for="object-limit">Max Objects</label>
+          <input id="object-limit" value="30" type="number" min="1" max="200" />
+        </div>
+        <div class="row">
+          <button id="connect-sf">Connect Salesforce</button>
+          <button id="load-schema">Load Org Schema</button>
+          <button id="logout-sf" class="secondary">Disconnect</button>
+        </div>
+        <p id="auth-status" class="hint">Not connected.</p>
+      </details>
+
+
+
+      <details>
+        <summary>Visual Theme</summary>
+        <div class="auth-grid">
+          <label for="node-color">Object modal color</label>
+          <input id="node-color" type="color" value="#5aa9ff" />
+          <label for="link-color">Connecting node color</label>
+          <input id="link-color" type="color" value="#5bb8ff" />
+        </div>
+        <div class="row">
+          <button id="apply-colors">Apply Colors</button>
+        </div>
+      </details>
+
+
+      <details>
+        <summary>Mini-game: Spider Defense</summary>
+        <div class="row">
+          <button id="start-minigame">Start Game</button>
+          <button id="stop-minigame" class="secondary">Stop Game</button>
+        </div>
+        <p id="minigame-status" class="hint">Spiders inactive.</p>
+      </details>
+
+      <details>
+        <summary>Accessibility</summary>
+        <div class="auth-grid">
+          <label><input id="toggle-translucency" type="checkbox" checked /> Translucent menus</label>
+          <label><input id="toggle-menus" type="checkbox" checked /> Show overlay menus</label>
+        </div>
+      </details>
+
+      <div class="row">
+        <button id="enter-vr">Enter VR</button>
+        <button id="rebuild">Rebuild Cloud</button>
+        <button id="fit-room" class="secondary">Fit To Room</button>
+      </div>
+      <label for="schema-input">Org schema JSON</label>
+      <textarea id="schema-input" spellcheck="false"></textarea>
+      <p id="room-status" class="hint">Room scaling: not initialized.</p>
+      <p class="hint">Expected shape: { "objects": [{"name":"Account","fields":[{"name":"OwnerId","type":"Lookup","referenceTo":"User"}]}]}</p>
+    </div>
+    <div id="canvas-root"></div>
+    <div id="sf-window" class="sf-window" aria-label="Salesforce Browser Window">
+      <div id="sf-window-header" class="sf-window-header">
+        <strong>Salesforce Browser</strong>
+        <button id="sf-window-refresh" class="secondary">Refresh</button>
+      </div>
+      <div class="sf-window-toolbar">
+        <input id="sf-search" placeholder="Search objects/fields..." />
+      </div>
+      <div id="sf-window-content" class="sf-window-content"></div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
